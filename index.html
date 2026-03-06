@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Проф. деактивация · анимации</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #0d0d0d, #050505 70%);
+      color: #e5e5e5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+
+    .bg-glow {
+      position: fixed;
+      inset: -20%;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,.06), transparent 35%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,.04), transparent 40%),
+        radial-gradient(circle at 30% 80%, rgba(255,255,255,.05), transparent 35%);
+      filter: blur(30px);
+      pointer-events: none;
+      z-index: 0;
+      animation: glowPulse 12s infinite alternate ease-in-out;
+    }
+
+    @keyframes glowPulse {
+      0% { opacity: 0.7; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.05); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 980px;
+      width: 100%;
+      background: rgba(15, 15, 15, 0.75);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow:
+        0 20px 40px rgba(0,0,0,0.6),
+        0 0 40px rgba(255,255,255,0.03);
+      animation: containerAppear 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+    }
+
+    @keyframes containerAppear {
+      0% { opacity: 0; transform: translateY(20px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 26px;
+      margin-bottom: 8px;
+      letter-spacing: .6px;
+      color: #f4f4f4;
+      text-shadow: 0 0 12px rgba(255,255,255,.15);
+      animation: titleGlow 2s infinite alternate;
+    }
+
+    @keyframes titleGlow {
+      0% { text-shadow: 0 0 12px rgba(255,255,255,.15); }
+      100% { text-shadow: 0 0 20px rgba(255,255,255,.3), 0 0 30px rgba(100,150,255,.2); }
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #bdbdbd;
+      margin-bottom: 10px;
+      font-size: 14px;
+      opacity: .9;
+      animation: fadeSlideUp 0.6s 0.1s both;
+    }
+
+    .contacts {
+      text-align: center;
+      color: #d6d6d6;
+      font-weight: 600;
+      margin-bottom: 18px;
+      opacity: .85;
+      animation: fadeSlideUp 0.6s 0.15s both;
+    }
+
+    @keyframes fadeSlideUp {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 16px 0 28px;
+      animation: buttonsAppear 0.7s 0.2s both;
+    }
+
+    @keyframes buttonsAppear {
+      0% { opacity: 0; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .glass-btn {
+      text-decoration: none;
+      padding: 12px 28px;
+      min-width: 200px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.04));
+      color: #f5f5f5;
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow:
+        0 10px 24px rgba(0,0,0,.6),
+        0 0 22px rgba(255,255,255,.06);
+      transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.5), 
+                  filter 0.2s ease, 
+                  box-shadow 0.25s ease,
+                  background 0.2s ease;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      backdrop-filter: blur(6px);
+      cursor: pointer;
+      font-size: 15px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease;
+    }
+
+    .glass-btn:hover::after {
+      width: 300px;
+      height: 300px;
+    }
+
+    .glass-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(1.15);
+      box-shadow:
+        0 18px 32px rgba(0,0,0,.8),
+        0 0 30px rgba(255,255,255,.15);
+      border-color: rgba(255,255,255,.25);
+    }
+
+    .glass-btn:active {
+      transform: translateY(1px) scale(0.98);
+      transition: transform 0.1s;
+    }
+
+    .profile-expand {
+      margin-top: 24px;
+      margin-bottom: 10px;
+      display: none;
+      opacity: 0;
+      transform: translateY(-15px);
+      transition: opacity 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1), 
+                  transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+    }
+
+    .profile-expand.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .profile-card {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 26px;
+      background: rgba(12, 12, 12, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 28px;
+      padding: 26px 30px;
+      box-shadow: 0 20px 36px rgba(0,0,0,0.7), 0 0 30px rgba(255,255,255,.02);
+      animation: cardFloat 0.5s ease-out;
+    }
+
+    @keyframes cardFloat {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .custom-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: #1a1a2a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      color: #d0e0ff;
+      border: 2px solid rgba(255,255,255,.28);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.8), 0 0 22px rgba(255,255,255,.1);
+      flex-shrink: 0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: avatarPop 0.6s 0.1s both;
+      overflow: hidden;
+    }
+
+    .custom-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    @keyframes avatarPop {
+      0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
+
+    .custom-avatar:hover {
+      transform: scale(1.05) rotate(2deg);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 30px rgba(255,255,255,.2);
+    }
+
+    .profile-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .detail-line {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .detail-item {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 40px;
+      padding: 8px 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      color: #eaeaea;
+      backdrop-filter: blur(4px);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      animation: itemSlide 0.4s 0.15s both;
+    }
+
+    @keyframes itemSlide {
+      0% { opacity: 0; transform: translateX(-10px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    .detail-item:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.15);
+    }
+
+    .channel-ref {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(90, 160, 255, 0.08);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 40px;
+      padding: 8px 22px;
+      text-decoration: none;
+      color: #b8d9ff;
+      font-size: 16px;
+      transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+      animation: itemSlide 0.4s 0.2s both;
+    }
+
+    .channel-ref:hover {
+      background: rgba(120, 180, 255, 0.15);
+      color: white;
+      border-color: rgba(255,255,255,.3);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 20px rgba(0,100,255,0.2);
+    }
+
+    .bio-muted {
+      margin-top: 4px;
+      font-size: 14px;
+      color: #a8a8b5;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: fadeSlideUp 0.5s 0.25s both;
+    }
+
+    .main-content {
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .main-content.hidden {
+      display: none;
+    }
+
+    .section {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .card {
+      background: rgba(20, 20, 20, 0.7);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.02),
+        0 12px 30px rgba(0,0,0,.5),
+        0 0 22px rgba(255,255,255,.04);
+      backdrop-filter: blur(6px);
+      transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.2), 
+                  box-shadow 0.3s ease,
+                  border-color 0.2s ease;
+      animation: cardReveal 0.6s both;
+    }
+
+    @keyframes cardReveal {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.05),
+        0 22px 40px rgba(0,0,0,.8),
+        0 0 35px rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.15);
+    }
+
+    .card h2 {
+      font-size: 15px;
+      margin-bottom: 10px;
+      color: #f1f1f1;
+      letter-spacing: .4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h2 i {
+      opacity: .9;
+      filter: drop-shadow(0 0 6px rgba(255,255,255,.25));
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover h2 i {
+      transform: scale(1.1) rotate(2deg);
+    }
+
+    .list {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      font-size: 14px;
+      color: #d6d6d6;
+    }
+
+    .list li {
+      transition: transform 0.2s ease, color 0.2s ease;
+      animation: listItemFade 0.4s both;
+    }
+
+    @keyframes listItemFade {
+      0% { opacity: 0; transform: translateX(-5px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    .list li:nth-child(1) { animation-delay: 0.15s; }
+    .list li:nth-child(2) { animation-delay: 0.2s; }
+    .list li:nth-child(3) { animation-delay: 0.25s; }
+    .list li:nth-child(4) { animation-delay: 0.3s; }
+    .list li:nth-child(5) { animation-delay: 0.35s; }
+
+    .list li:hover {
+      transform: translateX(4px);
+      color: white;
+    }
+
+    .muted {
+      color: #a8a8a8;
+      font-size: 13px;
+      margin-top: 6px;
+      opacity: .9;
+      transition: opacity 0.2s ease;
+    }
+
+    .card:hover .muted {
+      opacity: 1;
+    }
+
+    .footer-note {
+      margin-top: 22px;
+      text-align: right;
+      font-size: 13px;
+      opacity: 0.4;
+      letter-spacing: .2px;
+      transition: opacity 0.3s ease;
+      animation: fadeSlideUp 0.6s 0.4s both;
+    }
+
+    .footer-note:hover {
+      opacity: 0.8;
+    }
+
+    @media (max-width: 700px) {
+      h1 { font-size: 20px; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .container { padding: 18px; }
+      .glass-btn { min-width: 160px; padding: 10px 18px; }
+      .profile-card { flex-direction: column; align-items: flex-start; padding: 20px; }
+      .custom-avatar { width: 72px; height: 72px; font-size: 40px; }
+      .detail-line { flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <div class="container">
+    <h1><i class="fa-solid fa-shield-halved"></i> ПРОФЕССИОНАЛЬНАЯ ДЕАКТИВАЦИЯ</h1>
+    <p class="subtitle">Ликвидация проблемных объектов в Telegram силами эксперта.</p>
+    <p class="contacts">Постоянный контакт для связи: @modegmail</p>
+
+    <div class="button-group">
+      <a href="https://t.me/modegmail" target="_blank" class="glass-btn">
+        <i class="fa-brands fa-telegram"></i> Написать в Telegram
+      </a>
+      <button id="profileToggleBtn" class="glass-btn" style="background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.02));">
+        <i class="fa-regular fa-id-card"></i> Профиль
+      </button>
+    </div>
+
+    <div id="profileExpand" class="profile-expand">
+      <div class="profile-card">
+        <div class="custom-avatar">
+          <img src="https://i.ibb.co/qF5qP74h/IMG-20260306-223133-629.jpg" alt="Аватар профиля">
+        </div>
+        <div class="profile-details">
+          <div class="detail-line">
+            <span class="detail-item"><i class="fa-regular fa-user"></i> @modegmail</span>
+            <span class="detail-item"><i class="fa-regular fa-id-card"></i> ID: 624919891</span>
+          </div>
+          <div class="detail-line">
+            <a href="https://t.me/astralovlink" target="_blank" class="channel-ref">
+              <i class="fa-brands fa-telegram"></i> t.me/astralovlink
+              <i class="fa-solid fa-arrow-up-right-from-sizes" style="font-size: 12px; opacity: 0.8;"></i>
+            </a>            
+          </div>
+          <div class="bio-muted">
+            <i class="fa-regular fa-clock"></i> Удаляет запрещённый контент с 2021 года.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mainContent" class="main-content">
+      <div class="section grid-2">
+        <div class="card">
+          <h2><i class="fa-solid fa-tags"></i> ПРАЙС-ЛИСТ (Индивидуальная работа)</h2>
+          <ul class="list">
+            <li>• Деактивация БОТА — от 5$</li>
+            <li>• Деактивация ПРИВАТНОГО ЧАТА / КАНАЛА — от 10$ (до 5000 участников)</li>
+            <li>• Деактивация ПУБЛИЧНОГО КАНАЛА — от 15$</li>
+            <li>• СРОЧНАЯ ДЕАКТИВАЦИЯ — +50% к стоимости</li>
+            <li>• Деактивация АККАУНТА — от 10$</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2><i class="fa-solid fa-gear"></i> Как происходит работа</h2>
+          <ul class="list">
+            <li>1. Вы предоставляете ссылку на объект.</li>
+            <li>2. Я провожу анализ и сообщаю итоговую стоимость и сроки.</li>
+            <li>3. После оплаты начинается выполнение работы.</li>
+            <li>4. Вы получаете подтверждающий скриншот о деактивации.</li>
+          </ul>
+          <p class="muted">
+            <i class="fa-regular fa-message"></i>
+            Предварительная консультация и оценка — БЕСПЛАТНО.
+          </p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="card">
+          <h2><i class="fa-solid fa-triangle-exclamation"></i> Условия</h2>
+          <ul class="list">
+            <li>• Оплата не возвращается после начала выполнения работы.</li>
+            <li>• Комиссия сети за перевод лежит на заказчике.</li>
+            <li>• Возможность и гарантия деактивации предоставляются только после анализа объекта.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  <script>
+    (function() {
+      const toggleBtn = document.getElementById('profileToggleBtn');
+      const profileBlock = document.getElementById('profileExpand');
+      const mainContent = document.getElementById('mainContent');
+
+      function toggleProfileView() {
+        if (profileBlock.classList.contains('show')) {
+          profileBlock.classList.remove('show');
+          mainContent.classList.remove('hidden');
+        } else {
+          profileBlock.classList.add('show');
+          mainContent.classList.add('hidden');
+        }
+      }
+
+      toggleBtn.addEventListener('click', toggleProfileView);
+    })();
+  </script>
+</body>
+</html>
